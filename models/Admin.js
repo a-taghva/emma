@@ -1,7 +1,7 @@
-const { schema, model, Types, Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const AdminSchema = new schema({
+const AdminSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -38,8 +38,8 @@ AdminSchema.pre('save', async function(next) {
 });
 
 // compare the incoming password with the hashed password
-AdminSchema.methods.isCorrectPassword = async function(password) {
-  return bcrypt.compare(password, this.password);
+AdminSchema.methods.isCorrectPassword = function(password) {
+  return bcrypt.compareSync(password, this.password)
 };
 
 
