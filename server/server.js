@@ -1,9 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const db = require('./config/connection');
+const routes = require('./controllers');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
+
+app.use(express.json());
+app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
