@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { signToken } = require('../../utils/auth');
 const { Admin } = require('../models');
 
 router.post('/signup', async (req, res) => {
@@ -11,7 +12,9 @@ router.post('/signup', async (req, res) => {
     return res.send({ 'message': 'failed to create user', error });
   }
 
-  res.status(201).json(admin);
+  const token = signToken(admin._id, admin.username);
+
+  res.status(201).json({ token });
 });
 
 router.get('/login', async(req, res) => {
@@ -27,7 +30,9 @@ router.get('/login', async(req, res) => {
     return res.status(401).json({ "message": "user is not authenticated" });
   };
 
-  return res.status(200).json(admin);
+  const token = signToken(admin._id, admin.username);
+
+  return res.status(200).json({ token });
 });
 
 module.exports = router;
